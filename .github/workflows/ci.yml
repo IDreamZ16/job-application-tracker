@@ -1,0 +1,11 @@
+name: CI
+
+on:
+  workflow_dispatch:  # only runs when manually triggered
+
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CI pipeline not yet implemented
+        run: echo "CI will be configured in a future commit"
