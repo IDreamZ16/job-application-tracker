@@ -22,7 +22,7 @@ export const ACTIVITY_TYPES = [
   { value: 'note',         label: '📝 Note' },
 ];
 
-export const KANBAN_COLUMNS = [
+export const JOB_STATUS_ORDER = [
   { id: 'saved',        label: 'Saved' },
   { id: 'applied',      label: 'Applied' },
   { id: 'interviewing', label: 'Interviewing' },

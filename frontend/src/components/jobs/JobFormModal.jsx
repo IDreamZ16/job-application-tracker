@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../shared/Modal";
-import { createJob } from "../../services/jobsService";
+import { createJob, updateJob } from "../../services/jobsService";
 import { useQueryClient } from "@tanstack/react-query";
 
-const INITIAL = {
+const EMPTY = {
   company: "",
   position: "",
   status: "saved",
@@ -17,11 +17,36 @@ const INITIAL = {
   applied_date: "",
 };
 
-const AddJobModal = ({ isOpen, onClose }) => {
-  const [form, setForm] = useState(INITIAL);
+// Convert a database job (with nulls) into form-friendly strings
+const jobToForm = (job) => ({
+  company: job.company ?? "",
+  position: job.position ?? "",
+  status: job.status ?? "saved",
+  job_url: job.job_url ?? "",
+  salary_min: job.salary_min ?? "",
+  salary_max: job.salary_max ?? "",
+  location: job.location ?? "",
+  job_type: job.job_type ?? "",
+  description: job.description ?? "",
+  notes: job.notes ?? "",
+  applied_date: job.applied_date ? job.applied_date.split("T")[0] : "",
+});
+
+const JobFormModal = ({ isOpen, onClose, job = null }) => {
+  const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+
+  const isEdit = Boolean(job);
+
+  // Reset/populate form whenever modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setForm(job ? jobToForm(job) : EMPTY);
+      setError("");
+    }
+  }, [isOpen, job]);
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
@@ -38,19 +63,32 @@ const AddJobModal = ({ isOpen, onClose }) => {
         location: form.location || null,
         applied_date: form.applied_date || null,
       };
-      await createJob(payload);
+
+      if (isEdit) {
+        await updateJob(job.id, payload);
+      } else {
+        await createJob(payload);
+      }
+
       await queryClient.invalidateQueries(["jobs"]);
-      setForm(INITIAL);
       onClose();
     } catch (err) {
-      setError(err.response?.data?.error || "Failed to create job");
+      setError(
+        err.response?.data?.error ||
+          `Failed to ${isEdit ? "update" : "create"} job`,
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add New Job" size="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={isEdit ? "Edit Job" : "Add New Job"}
+      size="lg"
+    >
       {error && (
         <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-lg px-3 py-2.5 mb-4">
           {error}
@@ -59,7 +97,9 @@ const AddJobModal = ({ isOpen, onClose }) => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="label">Company *</label>
+            <label className="label">
+              Company <span className="text-amber-400">*</span>
+            </label>
             <input
               className="input"
               placeholder="Shopify"
@@ -69,7 +109,9 @@ const AddJobModal = ({ isOpen, onClose }) => {
             />
           </div>
           <div>
-            <label className="label">Position *</label>
+            <label className="label">
+              Position <span className="text-amber-400">*</span>
+            </label>
             <input
               className="input"
               placeholder="Junior Software Engineer"
@@ -177,11 +219,16 @@ const AddJobModal = ({ isOpen, onClose }) => {
           <label className="label">Notes</label>
           <textarea
             className="input resize-none h-20"
-            placeholder="Any notes about this job..."
+            placeholder="Your personal notes about this job..."
             value={form.notes}
             onChange={set("notes")}
           />
         </div>
+
+        <p className="text-xs text-slate-500 pt-2">
+          Fields marked with <span className="text-amber-400">*</span> are
+          required
+        </p>
 
         <div className="flex gap-3 pt-2">
           <button
@@ -196,7 +243,13 @@ const AddJobModal = ({ isOpen, onClose }) => {
             disabled={loading}
             className="btn-primary flex-1 disabled:opacity-50"
           >
-            {loading ? "Adding..." : "Add Job"}
+            {loading
+              ? isEdit
+                ? "Saving..."
+                : "Adding..."
+              : isEdit
+                ? "Save Changes"
+                : "Add Job"}
           </button>
         </div>
       </form>
@@ -204,4 +257,4 @@ const AddJobModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddJobModal;
+export default JobFormModal;
