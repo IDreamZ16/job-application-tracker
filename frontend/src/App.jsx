@@ -4,6 +4,7 @@ import Layout from "./components/shared/Layout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Jobs from "./pages/Jobs";
 
 const App = () => (
   <AuthProvider>
@@ -16,6 +17,7 @@ const App = () => (
         {/* Protected */}
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/jobs" element={<Jobs />} />
         </Route>
 
         {/* Redirect anything else */}

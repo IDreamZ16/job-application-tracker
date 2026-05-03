@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../store/AuthContext";
+import Navbar from "./Navbar";
 import LoadingSpinner from "./LoadingSpinner";
 
 const Layout = () => {
@@ -17,8 +18,11 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen bg-base-950">
-      <main className="p-6 max-w-7xl mx-auto">
-        <Outlet />
+      <Navbar />
+      <main className="lg:ml-60 pt-16 lg:pt-0 min-h-screen">
+        <div className="p-6 max-w-7xl mx-auto">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
