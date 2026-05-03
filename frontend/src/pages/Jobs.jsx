@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Plus, LayoutGrid, List, Briefcase, Pencil } from "lucide-react";
 import { getJobs } from "../services/jobsService";
@@ -13,6 +14,7 @@ const Jobs = () => {
   const [view, setView] = useState("cards");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
+  const navigate = useNavigate();
 
   const { data: jobs = [], isLoading } = useQuery({
     queryKey: ["jobs"],
@@ -33,6 +35,8 @@ const Jobs = () => {
     setModalOpen(false);
     setEditingJob(null);
   };
+
+  const goToJob = (id) => navigate(`/jobs/${id}`);
 
   if (isLoading)
     return (
@@ -134,7 +138,16 @@ const Jobs = () => {
                   {jobs.map((job) => (
                     <tr
                       key={job.id}
-                      className="hover:bg-base-700/50 transition-colors"
+                      onClick={() => goToJob(job.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          goToJob(job.id);
+                        }
+                      }}
+                      tabIndex={0}
+                      role="link"
+                      className="hover:bg-base-700/50 cursor-pointer transition-colors focus:outline-none focus-visible:bg-base-700/50 focus-visible:ring-1 focus-visible:ring-amber-500/40 focus-visible:ring-inset"
                     >
                       <td className="px-4 py-3">
                         <span
@@ -168,7 +181,10 @@ const Jobs = () => {
                       </td>
                       <td className="px-4 py-3 text-right">
                         <button
-                          onClick={() => openEdit(job)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openEdit(job);
+                          }}
                           className="text-slate-500 hover:text-amber-400 hover:bg-amber-400/10 p-1.5 rounded-md transition-colors"
                           aria-label={`Edit ${job.position}`}
                         >

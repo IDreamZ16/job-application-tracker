@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
 import { MapPin, Building2, Pencil, Calendar } from "lucide-react";
 import { JOB_STATUSES, JOB_TYPES } from "../../utils/constants";
 import { formatSalary, formatDate } from "../../utils/formatters";
 
 const JobCard = ({ job, onEdit }) => (
-  <div className="card p-5 hover:border-base-500 transition-all duration-150 group flex flex-col">
+  <Link
+    to={`/jobs/${job.id}`}
+    className="card p-5 hover:border-base-500 transition-all duration-150 group flex flex-col"
+  >
     {/* TOP CONTENT — grows to fill available space */}
     <div className="flex-1">
       <div className="flex items-start justify-between gap-3">
@@ -19,7 +23,11 @@ const JobCard = ({ job, onEdit }) => (
           </div>
         </div>
         <button
-          onClick={() => onEdit(job)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onEdit(job);
+          }}
           className="text-slate-500 hover:text-amber-400 hover:bg-amber-400/10 p-2 rounded-md transition-colors shrink-0 lg:opacity-0 lg:group-hover:opacity-100 lg:focus:opacity-100"
           aria-label={`Edit ${job.position}`}
         >
@@ -61,7 +69,7 @@ const JobCard = ({ job, onEdit }) => (
         )}
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 const JobSection = ({ statusId, jobs, onEdit }) => {
