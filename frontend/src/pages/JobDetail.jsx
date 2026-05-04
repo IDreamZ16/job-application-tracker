@@ -19,6 +19,7 @@ import LoadingSpinner from "../components/shared/LoadingSpinner";
 import Modal from "../components/shared/Modal";
 import StatusBadge from "../components/shared/StatusBadge";
 import JobFormModal from "../components/jobs/JobFormModal";
+import ContactsSection from "../components/jobs/ContactsSection";
 import { JOB_TYPES } from "../utils/constants";
 import { formatSalary, formatDate } from "../utils/formatters";
 
@@ -182,7 +183,7 @@ const JobDetail = () => {
         </MetaCell>
       </div>
 
-      {/* Job description (from the posting) */}
+      {/* Job description */}
       {job.description && (
         <div className="card p-6">
           <h2 className="font-display text-lg font-semibold text-slate-200 mb-3">
@@ -211,19 +212,15 @@ const JobDetail = () => {
         )}
       </div>
 
-      {/* For later contacts and activities*/}
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Placeholder
-          icon={Users}
-          title="Contacts"
-          description="Recruiters, hiring managers, referrals — track who you've talked to."
-        />
-        <Placeholder
-          icon={Activity}
-          title="Activities"
-          description="Phone screens, interviews, follow-ups — a timeline of every touchpoint."
-        />
-      </div>
+      {/* Contacts */}
+      <ContactsSection jobId={id} />
+
+      {/* Activities coming later */}
+      <Placeholder
+        icon={Activity}
+        title="Activities"
+        description="Phone screens, interviews, follow-ups — a timeline of every touchpoint."
+      />
 
       {/* Edit modal */}
       <JobFormModal isOpen={editOpen} onClose={handleEditClose} job={job} />
@@ -272,7 +269,7 @@ const JobDetail = () => {
             {deleteMutation.isPending && (
               <Loader2 size={14} className="animate-spin" />
             )}
-            {deleteMutation.isPending ? "Deleting…" : "Delete application"}
+            {deleteMutation.isPending ? "Deleting..." : "Delete application"}
           </button>
         </div>
       </Modal>
@@ -292,7 +289,7 @@ const MetaCell = ({ icon: Icon, label, value, children, className = "" }) => (
     </div>
   </div>
 );
-
+/* Placeholder for new feature additions */
 const Placeholder = ({ icon: Icon, title, description }) => (
   <div className="rounded-xl border-2 border-dashed border-base-600 bg-base-800/40 p-6">
     <div className="flex items-center gap-3">
