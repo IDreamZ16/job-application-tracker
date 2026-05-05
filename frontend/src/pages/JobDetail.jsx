@@ -10,7 +10,6 @@ import {
   Calendar,
   ExternalLink,
   Users,
-  Activity,
   AlertTriangle,
   Loader2,
 } from "lucide-react";
@@ -20,6 +19,7 @@ import Modal from "../components/shared/Modal";
 import StatusBadge from "../components/shared/StatusBadge";
 import JobFormModal from "../components/jobs/JobFormModal";
 import ContactsSection from "../components/jobs/ContactsSection";
+import ActivitiesSection from "../components/jobs/ActivitiesSection";
 import { JOB_TYPES } from "../utils/constants";
 import { formatSalary, formatDate } from "../utils/formatters";
 
@@ -215,12 +215,8 @@ const JobDetail = () => {
       {/* Contacts */}
       <ContactsSection jobId={id} />
 
-      {/* Activities coming later */}
-      <Placeholder
-        icon={Activity}
-        title="Activities"
-        description="Phone screens, interviews, follow-ups — a timeline of every touchpoint."
-      />
+      {/* Activities */}
+      <ActivitiesSection jobId={id} />
 
       {/* Edit modal */}
       <JobFormModal isOpen={editOpen} onClose={handleEditClose} job={job} />

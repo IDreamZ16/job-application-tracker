@@ -1,9 +1,16 @@
 export const formatSalary = (min, max) => {
   if (!min && !max) return null;
-  const fmt = (n) => `$${(n / 1000).toFixed(0)}k`;
-  if (min && max) return `${fmt(min)} – ${fmt(max)}`;
-  if (min) return `From ${fmt(min)}`;
-  return `Up to ${fmt(max)}`;
+
+  // If every present value is under 1000, treat as hourly. Otherwise annual.
+  const isHourly = [min, max].filter(Boolean).every((v) => v < 1000);
+
+  const fmt = (n) =>
+    isHourly ? `${Math.round(n)}` : `${Math.round(n / 1000)}k`;
+  const suffix = isHourly ? "/hr" : "";
+
+  if (min && max) return `${fmt(min)} - ${fmt(max)}${suffix}`;
+  if (min) return `${fmt(min)}+${suffix}`;
+  return `Up to ${fmt(max)}${suffix}`;
 };
 
 export const formatDate = (date) => {

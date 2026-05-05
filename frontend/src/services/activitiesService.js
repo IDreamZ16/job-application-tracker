@@ -10,6 +10,11 @@ export const createActivity = async (jobId, data) => {
   return res.data.activity;
 };
 
+export const updateActivity = async (jobId, activityId, data) => {
+  const res = await api.put(`/api/jobs/${jobId}/activities/${activityId}`, data);
+  return res.data.activity;
+};
+
 export const deleteActivity = async (jobId, activityId) => {
   const res = await api.delete(`/api/jobs/${jobId}/activities/${activityId}`);
   return res.data;
