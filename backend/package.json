@@ -10,12 +10,10 @@
   "start": "node src/server.js",
   "dev": "nodemon src/server.js",
   "test": "jest --runInBand --forceExit",
-  "test:watch": "jest --watch"
-},
-"jest": {
-  "testEnvironment": "node",
-  "testRegex": "tests/.*\\.test\\.js$"
-},
+  "test:watch": "jest --watch",
+  "migrate": "node scripts/migrate.js",
+  "migrate:test": "DATABASE_URL=postgres://postgres:postgres@localhost:5432/job_tracker_test node scripts/migrate.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
