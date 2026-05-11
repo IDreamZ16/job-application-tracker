@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const { Pool } = require("pg");
 
-// When invoked directly (not from tests), load .env
 if (require.main === module && !process.env.DATABASE_URL) {
   require("dotenv").config();
 }
@@ -12,7 +11,15 @@ async function runMigrations() {
     throw new Error("DATABASE_URL is not set");
   }
 
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl:
+      process.env.DATABASE_URL?.includes("localhost") ||
+      process.env.DATABASE_URL?.includes("127.0.0.1")
+        ? false
+        : { rejectUnauthorized: false },
+  });
+
   const migrationsDir = path.join(
     __dirname,
     "..",
@@ -24,10 +31,9 @@ async function runMigrations() {
   const files = fs
     .readdirSync(migrationsDir)
     .filter((f) => f.endsWith(".sql"))
-    .filter((f) => !f.startsWith("000_")) // 000_ reserved for Docker init scripts
+    .filter((f) => !f.startsWith("000_"))
     .sort();
 
-  // Mask password in log output
   const safeUrl = process.env.DATABASE_URL.replace(/:[^@/]+@/, ":***@");
   console.log(`Running ${files.length} migrations against ${safeUrl}`);
 
