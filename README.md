@@ -2,7 +2,7 @@
 
 A full-stack web app for tracking job applications, contacts, and interview activity through the hiring process. Built as a portfolio project to demonstrate end-to-end engineering: schema design, REST API development, authenticated React UI, Dockerized local development, and (coming soon) automated testing and CI/CD.
 
-**Live demo:** *coming soon*
+**Live demo:** <https://jobhuntmanager.vercel.app/>
 
 ## Features
 
@@ -105,7 +105,7 @@ This starts three containers: `job_tracker_db` (Postgres on `:5432`), `job_track
 Once the containers are healthy:
 
 - Frontend: http://localhost:3000
-- Backend health check: http://localhost:5000/api/health
+- Backend health check: http://localhost:5000/health
 
 To tail logs:
 
