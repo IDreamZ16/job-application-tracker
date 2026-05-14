@@ -2,7 +2,7 @@
 
 A full-stack web app for tracking job applications, contacts, and interview activity through the hiring process. Built as a portfolio project to demonstrate end-to-end engineering: schema design, REST API development, authenticated React UI, Dockerized local development, and (coming soon) automated testing and CI/CD.
 
-**Live demo:** <https://jobhuntmanager.vercel.app/>
+**Live demo:** <https://jobhuntmanager.vercel.app/> Note: Since a free hosting service is being used. You may need to wait about 30 seconds before the database is initialized when you try to interact with the website for the first time.
 
 ## Features
 
