@@ -4,6 +4,8 @@ A full-stack web app for tracking job applications, contacts, and interview acti
 
 **Live demo:** <https://jobhuntmanager.vercel.app/> Note: Since a free hosting service is being used. You may need to wait about 30 seconds before the database is initialized when you try to interact with the website for the first time.
 
+https://github.com/user-attachments/assets/a3bf8871-5ece-4f6b-aa7e-95c62262f161
+
 ## Features
 
 - **Authentication** — JWT-based register and login with bcrypt password hashing
