@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/a3bf8871-5ece-4f6b-aa7e-95c62262f161
 ## Tech Stack
 
 **Frontend**
-- React 18 with Vite for the build pipeline
+- React 19 with Vite for the build pipeline
 - React Router for client-side routing
 - TanStack Query for server-state management (caching, invalidation, background refetching)
 - Axios with request/response interceptors for JWT handling
